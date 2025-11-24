@@ -256,11 +256,30 @@ class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
         return self._name
 
     @property
+    def suggested_display_precision(self) -> int:
+        """Return the suggested display precision for temperature.
+
+        Celsius: 1 decimal place (e.g., 20.0°C)
+        Fahrenheit: 0 decimal places (e.g., 68°F)
+        """
+        # Check the user's temperature unit preference
+        if hasattr(self.hass.config.units, 'temperature_unit'):
+            display_unit = self.hass.config.units.temperature_unit
+        else:
+            # Fallback to native unit if config not available
+            display_unit = self._attr_native_temperature_unit
+
+        # Return 1 decimal for Celsius, 0 for Fahrenheit
+        if display_unit == UnitOfTemperature.FAHRENHEIT:
+            return 0
+        return 1
+
+    @property
     def native_temperature(self):
         """Return the temperature."""
         temperature = self._weather_coordinator.data.currently().d.get("temperature")
 
-        return round(temperature, 2)
+        return round(temperature, 1)
 
     @property
     def cloud_coverage(self):
