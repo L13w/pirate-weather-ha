@@ -116,10 +116,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     # If only sensor
     elif PW_PLATFORMS[0] in pw_entity_platform:
-        await hass.config_entries.async_forward_entry_setup(entry, PLATFORMS[0])
+        await hass.config_entries.async_forward_entry_setups(entry, [PLATFORMS[0]])
     # If only weather
     elif PW_PLATFORMS[1] in pw_entity_platform:
-        await hass.config_entries.async_forward_entry_setup(entry, PLATFORMS[1])
+        await hass.config_entries.async_forward_entry_setups(entry, [PLATFORMS[1]])
 
     update_listener = entry.add_update_listener(async_update_options)
     hass.data[DOMAIN][entry.entry_id][UPDATE_LISTENER] = update_listener

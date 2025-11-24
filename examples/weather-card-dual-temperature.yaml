@@ -1,0 +1,40 @@
+type: markdown
+content: |
+  <ha-icon icon="mdi:weather-{{ states('weather.pirateweather') }}"></ha-icon> {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
+card_mod:
+  style: |
+    ha-card {
+      max-width: 245px !important;
+      margin: 0 0 0 auto !important;
+      box-sizing: border-box !important;
+      background: none !important;
+      box-shadow: none !important;
+    }
+    .card-content {
+      padding: 8px 16px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+    }
+    ha-markdown {
+      font-size: 28px !important;
+      font-weight: 400 !important;
+      text-align: right !important;
+      color: var(--primary-text-color) !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    ha-markdown p {
+      margin: 0 !important;
+      font-size: 28px !important;
+      font-weight: 400 !important;
+      text-align: right !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+    }
+    ha-icon {
+      --mdc-icon-size: 32px !important;
+      color: var(--primary-text-color) !important;
+    }
