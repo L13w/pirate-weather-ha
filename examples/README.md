@@ -4,15 +4,16 @@ This directory contains example Home Assistant dashboard card configurations for
 
 ## weather-card-dual-temperature.yaml
 
-A compact markdown card that displays temperature in both Celsius and Fahrenheit with a weather icon.
+A compact markdown card that displays temperature in both Celsius and Fahrenheit with an emoji weather icon.
 
 **Features:**
-- Shows current weather condition icon
-- Displays temperature in both units: `7.8°C / 46°F`
+- Shows current weather condition as an emoji icon (☁️ ☀️ 🌧️ etc.)
+- Displays temperature in both units: `☁️ 7.8°C / 46°F`
 - Celsius with 1 decimal place, Fahrenheit as integer
 - Large, readable 28px font
 - Right-aligned layout
 - Transparent background
+- Icon automatically updates based on weather condition
 
 **Requirements:**
 - [card-mod](https://github.com/thomasloven/lovelace-card-mod) custom component installed
@@ -27,7 +28,19 @@ A compact markdown card that displays temperature in both Celsius and Fahrenheit
 6. Replace `weather.pirateweather` with your actual entity ID if different
 7. Save
 
-**Screenshot:**
+**Example Display:**
 ```
-☁️  7.8°C / 46°F
+☁️ 7.8°C / 46°F
 ```
+
+**Supported Weather Icons:**
+- ☀️ Clear day / Sunny
+- 🌙 Clear night
+- ☁️ Cloudy
+- 🌫️ Fog
+- ⛅ Partly cloudy
+- 🌧️ Rainy
+- 🌨️ Snowy / Hail
+- 💨 Windy
+- ⛈️ Thunderstorm
+- 🌡️ Default (if condition not recognized)

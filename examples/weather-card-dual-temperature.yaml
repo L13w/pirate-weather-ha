@@ -1,6 +1,23 @@
 type: markdown
 content: |
-  <ha-icon icon="mdi:weather-{{ states('weather.pirateweather') }}"></ha-icon> {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
+  {% set condition = states('weather.pirateweather') %}
+  {% set icons = {
+    'clear-day': '☀️',
+    'clear-night': '🌙',
+    'cloudy': '☁️',
+    'fog': '🌫️',
+    'partly-cloudy-day': '⛅',
+    'partly-cloudy-night': '☁️',
+    'partlycloudy': '⛅',
+    'rainy': '🌧️',
+    'snowy': '🌨️',
+    'snowy-rainy': '🌨️',
+    'sunny': '☀️',
+    'windy': '💨',
+    'lightning': '⛈️',
+    'hail': '🌨️'
+  } %}
+  {{ icons.get(condition, '🌡️') }} {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
 card_mod:
   style: |
     ha-card {
@@ -12,29 +29,16 @@ card_mod:
     }
     .card-content {
       padding: 8px 16px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: flex-end !important;
     }
     ha-markdown {
       font-size: 28px !important;
       font-weight: 400 !important;
       text-align: right !important;
       color: var(--primary-text-color) !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
     }
     ha-markdown p {
       margin: 0 !important;
       font-size: 28px !important;
       font-weight: 400 !important;
       text-align: right !important;
-      display: flex !important;
-      align-items: center !important;
-      gap: 12px !important;
-    }
-    ha-icon {
-      --mdc-icon-size: 32px !important;
-      color: var(--primary-text-color) !important;
     }
