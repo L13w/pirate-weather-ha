@@ -1,5 +1,12 @@
 # Home Assistant Dashboard Card for Pirate Weather
 # Copy this into your Lovelace dashboard YAML or card editor
+# Requires card-mod for custom styling (install via HACS)
+#
+# Add the following to your configuration.yaml and restart Home Assistant:
+#
+# frontend:
+#   extra_module_url:
+#     - /hacsfiles/lovelace-card-mod/card-mod.js
 
 type: markdown
 content: >
@@ -20,4 +27,12 @@ content: >
     'lightning': '⛈️',
     'hail': '🌨️'
   } %}
-  ## {{ icons.get(condition, '🌡️') }} {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
+  {{ icons.get(condition, '🌡️') }} {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
+card_mod:
+  style:
+    ha-markdown$: |
+      p {
+        font-size: 1.8em !important;
+        font-weight: normal !important;
+        text-align: right !important;
+      }
