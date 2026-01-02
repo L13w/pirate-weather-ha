@@ -344,7 +344,7 @@ class PirateWeather(SingleCoordinatorWeatherEntity[WeatherUpdateCoordinator]):
         Fahrenheit: 0 decimal places (e.g., 68°F)
         """
         # Check the user's temperature unit preference
-        if hasattr(self.hass.config.units, 'temperature_unit'):
+        if hasattr(self.hass.config.units, "temperature_unit"):
             display_unit = self.hass.config.units.temperature_unit
         else:
             # Fallback to native unit if config not available
