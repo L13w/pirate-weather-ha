@@ -1,4 +1,4 @@
-"""Consts for the OpenWeatherMap."""
+"""Consts for the Pirate Weather."""
 
 from __future__ import annotations
 
@@ -32,10 +32,13 @@ DEFAULT_NAME = "PirateWeather"
 DEFAULT_LANGUAGE = "en"
 DEFAULT_UNITS = "us"
 DEFAULT_SCAN_INTERVAL = 1200
+DEFAULT_ENDPOINT = "https://api.pirateweather.net"
 ATTRIBUTION = "Data provided by Pirate Weather GUI"
 MANUFACTURER = "PirateWeather"
 CONF_LANGUAGE = "language"
 CONF_UNITS = "units"
+CONF_ENDPOINT = "endpoint"
+CONF_MODELS = "models"
 CONFIG_FLOW_VERSION = 2
 ENTRY_NAME = "name"
 ENTRY_WEATHER_COORDINATOR = "weather_coordinator"
@@ -118,6 +121,7 @@ ALL_CONDITIONS = {
     "time": "Time",
     "fire_index": "Fire Index",
     "fire_index_max": "Fire Index Max",
+    "fire_risk_level": "Fire Risk Level",
     "smoke": "Smoke",
     "smoke_max": "Smoke Max",
     "liquid_accumulation": "Liquid Accumulation",
@@ -126,59 +130,81 @@ ALL_CONDITIONS = {
     "apparent_temperature_high_time": "Daytime High Apparent Temperature Time",
     "apparent_temperature_low_time": "Overnight Low Apparent Temperature Time",
     "temperature_high_time": "Daytime High Temperature Time",
-    "temperature_min_time": "Daily Low Temperature Time",
+    "temperature_min_time": "Low Temperature Time",
+    "hrrr_subh_update_time": "HRRR SubH Update Time",
+    "hrrr_0_18_update_time": "HRRR 0-18 Update Time",
+    "nbm_update_time": "NBM Update Time",
+    "nbm_fire_update_time": "NBM Fire Update Time",
+    "hrrr_18_48_update_time": "HRRR 18-48 Update Time",
+    "gfs_update_time": "GFS Update Time",
+    "gefs_update_time": "GEFS Update Time",
+    "current_day_liquid": "Current Day Liquid Accumulation",
+    "current_day_snow": "Current Day Snow Accumulation",
+    "current_day_ice": "Current Day Ice Accumulation",
+    "cape": "Convective Available Potential Energy",
+    "cape_max": "Convective Available Potential Energy Max",
+    "solar": "Downward Short-Wave Radiation Flux",
+    "solar_max": "Downward Short-Wave Radiation Flux Max",
 }
 
 LANGUAGES = [
-    "af",
-    "al",
     "ar",
     "az",
+    "be",
     "bg",
+    "bn",
+    "bs",
     "ca",
-    "cz",
+    "cs",
+    "cy",
     "da",
     "de",
     "el",
     "en",
+    "eo",
     "es",
-    "eu",
+    "et",
     "fa",
     "fi",
     "fr",
-    "gl",
+    "ga",
+    "gd",
     "he",
     "hi",
     "hr",
     "hu",
     "id",
+    "is",
     "it",
     "ja",
-    "kr",
-    "la",
-    "lt",
-    "mk",
+    "ka",
+    "kn",
+    "ko",
+    "kw",
+    "lv",
+    "ml",
+    "mr",
     "nl",
     "no",
+    "pa",
     "pl",
     "pt",
-    "pt_br",
     "ro",
     "ru",
-    "se",
     "sk",
     "sl",
-    "sp",
     "sr",
     "sv",
-    "th",
+    "ta",
+    "te",
+    "tet",
     "tr",
-    "ua",
     "uk",
+    "ur",
     "vi",
-    "zh_cn",
-    "zh_tw",
-    "zu",
+    "x-pig-latin",
+    "zh",
+    "zh-tw",
 ]
 
 WEATHER_SENSOR_TYPES: tuple[SensorEntityDescription, ...] = (

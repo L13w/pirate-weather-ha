@@ -9,6 +9,7 @@ from typing import Any
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_API_KEY,
+    CONF_LANGUAGE,
     CONF_LATITUDE,
     CONF_LONGITUDE,
     CONF_MODE,
@@ -19,7 +20,11 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 
 from .const import (
+    CONF_ENDPOINT,
+    CONF_MODELS,
     CONF_UNITS,
+    DEFAULT_ENDPOINT,
+    DEFAULT_SCAN_INTERVAL,
     DOMAIN,
     ENTRY_NAME,
     ENTRY_WEATHER_COORDINATOR,
@@ -44,8 +49,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Pirate Weather as config entry."""
     name = entry.data[CONF_NAME]
     api_key = entry.data[CONF_API_KEY]
-    latitude = entry.data.get(CONF_LATITUDE, hass.config.latitude)
-    longitude = entry.data.get(CONF_LONGITUDE, hass.config.longitude)
+    latitude = _get_config_value(entry, CONF_LATITUDE)
+    longitude = _get_config_value(entry, CONF_LONGITUDE)
     forecast_mode = "daily"
     conditions = _get_config_value(entry, CONF_MONITORED_CONDITIONS)
     units = _get_config_value(entry, CONF_UNITS)
@@ -53,7 +58,27 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     forecast_hours = _get_config_value(entry, CONF_HOURLY_FORECAST)
     pw_entity_platform = _get_config_value(entry, PW_PLATFORM)
     pw_entity_rounding = _get_config_value(entry, PW_ROUND)
-    pw_scan_Int = entry.data[CONF_SCAN_INTERVAL]
+    scan_interval = _get_config_value(entry, CONF_SCAN_INTERVAL)
+    language = _get_config_value(entry, CONF_LANGUAGE)
+    endpoint = _get_config_value(entry, CONF_ENDPOINT)
+    models = _get_config_value(entry, CONF_MODELS)
+
+    # If scan_interval config value is not configured fall back to the entry data config value
+    if not scan_interval:
+        scan_interval = entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+
+    # If endpoint config value is not configured fall back to the default
+    if not endpoint:
+        endpoint = DEFAULT_ENDPOINT
+        _LOGGER.info("Using default Pirate Weather Endpoint")
+
+    # If latitude or longitude is not configured fall back to the HA location
+    if not latitude:
+        latitude = hass.config.latitude
+    if not longitude:
+        longitude = hass.config.longitude
+
+    scan_interval = max(scan_interval, 60)
 
     # Extract list of int from forecast days/ hours string if present
     # _LOGGER.warning('forecast_days_type: ' + str(type(forecast_days)))
@@ -86,7 +111,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     # Create and link weather WeatherUpdateCoordinator
     weather_coordinator = WeatherUpdateCoordinator(
-        api_key, latitude, longitude, timedelta(seconds=pw_scan_Int), hass
+        api_key,
+        latitude,
+        longitude,
+        timedelta(seconds=scan_interval),
+        language,
+        endpoint,
+        units,
+        hass,
+        entry,
+        models,
     )
     hass.data[DOMAIN][unique_location] = weather_coordinator
 
@@ -106,9 +140,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         CONF_HOURLY_FORECAST: forecast_hours,
         PW_PLATFORM: pw_entity_platform,
         PW_ROUND: pw_entity_rounding,
-        CONF_SCAN_INTERVAL: pw_scan_Int,
+        CONF_SCAN_INTERVAL: scan_interval,
+        CONF_LANGUAGE: language,
+        CONF_ENDPOINT: endpoint,
+        CONF_MODELS: models,
     }
 
+    # Setup platforms
     # If both platforms
     if (PW_PLATFORMS[0] in pw_entity_platform) and (
         PW_PLATFORMS[1] in pw_entity_platform
@@ -163,9 +201,12 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 def _get_config_value(config_entry: ConfigEntry, key: str) -> Any:
-    if config_entry.options:
+    if config_entry.options and key in config_entry.options:
         return config_entry.options[key]
-    return config_entry.data[key]
+    # Check if key exists
+    if config_entry.data and key in config_entry.data:
+        return config_entry.data[key]
+    return None
 
 
 def _filter_domain_configs(elements, domain):
