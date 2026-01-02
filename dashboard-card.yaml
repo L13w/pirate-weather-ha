@@ -1,0 +1,23 @@
+# Home Assistant Dashboard Card for Pirate Weather
+# Copy this into your Lovelace dashboard YAML or card editor
+
+type: markdown
+content: >
+  {% set condition = states('weather.pirateweather') %}
+  {% set icons = {
+    'clear-day': '☀️',
+    'clear-night': '🌙',
+    'cloudy': '☁️',
+    'fog': '🌫️',
+    'partly-cloudy-day': '⛅',
+    'partly-cloudy-night': '☁️',
+    'partlycloudy': '⛅',
+    'rainy': '🌧️',
+    'snowy': '🌨️',
+    'snowy-rainy': '🌨️',
+    'sunny': '☀️',
+    'windy': '💨',
+    'lightning': '⛈️',
+    'hail': '🌨️'
+  } %}
+  ## {{ icons.get(condition, '🌡️') }} {{ ((state_attr('weather.pirateweather', 'temperature') - 32) * 5/9) | round(1) }}°C / {{ state_attr('weather.pirateweather', 'temperature') | int }}°F
