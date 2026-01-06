@@ -29,3 +29,19 @@ This integration allows for any Home Assistant setup that uses Dark Sky to conti
 Since this integration returns the same type of data as the default Dark Sky integration, the parameter documentation is the same as described at <https://web.archive.org/web/20230128172320/https://www.home-assistant.io/integrations/weather.darksky/> for the weather card and here: <https://web.archive.org/web/20230326100953/https://www.home-assistant.io/integrations/darksky> for the sensor.
 
 To view the full integration documentation and installation instructions visit [https://pirateweather.net/en/latest/ha/](https://pirateweather.net/en/latest/ha/).
+
+## Dashboard Card
+An example dashboard card configuration is available in [dashboard-card.yaml](dashboard-card.yaml). This card displays the current temperature in both Celsius and Fahrenheit with weather condition icons.
+
+### Requirements
+The card uses [card-mod](https://github.com/thomasloven/lovelace-card-mod) for custom styling. To enable card-mod:
+
+1. Install card-mod via HACS (Frontend section)
+2. Add the following to your `configuration.yaml` under the `frontend:` section:
+   ```yaml
+   frontend:
+     extra_module_url:
+       - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=XXXXXXXXXX
+   ```
+3. Replace `XXXXXXXXXX` with the hacstag from your HACS card-mod resource URL (find this in Settings -> Dashboards -> Resources)
+4. Restart Home Assistant

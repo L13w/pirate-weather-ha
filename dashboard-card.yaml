@@ -2,11 +2,14 @@
 # Copy this into your Lovelace dashboard YAML or card editor
 # Requires card-mod for custom styling (install via HACS)
 #
-# Add the following to your configuration.yaml and restart Home Assistant:
+# Add the following to your configuration.yaml frontend section and restart Home Assistant:
 #
 # frontend:
 #   extra_module_url:
-#     - /hacsfiles/lovelace-card-mod/card-mod.js
+#     - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=XXXXXXXXXX
+#
+# Replace XXXXXXXXXX with the hacstag from your HACS card-mod resource URL.
+# Find this in Settings -> Dashboards -> Resources (3-dot menu)
 
 type: markdown
 content: >
